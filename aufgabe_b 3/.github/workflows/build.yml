@@ -1,0 +1,43 @@
+name: build
+
+on: push
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+
+      - name: Composer dependencies
+        working-directory: ./aufgabe-b
+        run: composer install --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
+
+      - name: Prepare Laravel Application
+        working-directory: ./aufgabe-b
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+      - name: Run Laravel Sail
+        working-directory: ./aufgabe-b
+        run: ./vendor/bin/sail up -d
+      - name: Migrate Models
+        working-directory: ./aufgabe-b
+        run: ./vendor/bin/sail artisan migrate
+      - name: Run Testsuite
+        working-directory: ./aufgabe-b
+        run: vendor/bin/phpunit tests/
+      - name: Login azure
+        uses: azure/docker-login@v1
+        with:
+          login-server: idi2019.azurecr.io
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+      - name: Init compose.sh
+        working-directory: ./aufgabe-b
+        run: chmod +x compose.sh
+      - name: Run docker
+        working-directory: ./aufgabe-b
+        run: compose.sh build-$GITHUB_RUN_NUMBER idi2019.azurecr.io
