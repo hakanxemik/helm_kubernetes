@@ -18,9 +18,9 @@ jobs:
       - name: Helm Dry Install Frontend
         run: helm install --dry-run --debug ./Charts/guestbook-frontend
       - name: Helm Dry Install Backend
-          run: helm install --dry-run --debug ./Charts/guestbook-backend
+        run: helm install --dry-run --debug ./Charts/guestbook-backend
       - name: Helm Dry Install Database
-          run: helm install --dry-run --debug ./Charts/guestbook-database
+        run: helm install --dry-run --debug ./Charts/guestbook-database
 
       # Azure Login
       - name: Azure Login
