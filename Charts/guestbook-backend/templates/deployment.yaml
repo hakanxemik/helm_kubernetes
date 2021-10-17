@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app}}
+      tier: {{ .Values.tier}}
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app}}
+        tier: {{ .Values.tier}}
+        track: stable
+    spec:
+      containers:
+        - name: {{ .Values.app}}
+          image: "{{ .Values.docker.registry}}/{{ .Values.docker.name }}:{{ .Values.docker.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: DB_CONNECTION
+              value: mariadb
+            - name: DB_HOST
+              value: database
+            - name: DB_DATABASE
+              value: guestbook
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: database-secrets
+                  key: user
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: database-secrets
+                  key: password
+          ports:
+            - name: http
+              containerPort: {{ .Values.port}}
+
+
+
+

@@ -1,0 +1,45 @@
+name: release
+on:
+  push:
+    tags: '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish Helm charts
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      # Helm Test
+      - name: Helm Lint
+        uses: azure/setup-helm@v1
+        run: helm lint ./Charts/
+      - name: Helm Dry Install Frontend
+        run: helm install --dry-run --debug ./Charts/guestbook-frontend
+      - name: Helm Dry Install Backend
+          run: helm install --dry-run --debug ./Charts/guestbook-backend
+      - name: Helm Dry Install Database
+          run: helm install --dry-run --debug ./Charts/guestbook-database
+
+      # Azure Login
+      - name: Azure Login
+        uses: azure/docker-login@v1
+        with:
+          login-server: idi2019.azurecr.io
+            username: ${{ secrets.USERNAME }}
+            password: ${{ secrets.PASSWORD }}
+
+      # Kubernetes Deployment
+      - name: Azure Kubernetes
+        uses: azure/k8s-set-context@master
+          with:
+            method: kubeconfig
+            kubeconfig: ${{ secrets.KUBE_CONFIG }}
+            context: context-default
+      - name: Azure Kubernetes Deployment Frontend
+        run: helm upgrade -i guestbook-frontend ./Charts/guestbook-frontend/
+      - name: Azure Kubernetes Deployment Backend
+        run: helm upgrade -i guestbook-backend ./Charts/guestbook-backend/
+      - name: Azure Kubernetes Deployment Database
+        run: helm upgrade -i guestbook-database ./Charts/guestbook-database/

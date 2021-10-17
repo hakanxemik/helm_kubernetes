@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.app}}
+      tier: {{ .Values.tier}}
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app}}
+        tier: {{ .Values.tier}}
+        track: stable
+    spec:
+      containers:
+        - name: {{ .Values.app}}
+          image: "{{ .Values.docker.registry}}/{{ .Values.docker.name }}:{{ .Values.docker.tag }}"
+          imagePullPolicy: Always
+          env:
+            - name: BACKEND_URL
+              value: http://127.0.0.1:8085/api/guestbook/entries
+          ports:
+            - name: http
+              containerPort: {{ .Values.port}}
+
+
+
+

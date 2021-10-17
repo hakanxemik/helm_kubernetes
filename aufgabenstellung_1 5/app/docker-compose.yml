@@ -1,7 +1,7 @@
 version: '3.5'
 services:
     php:
-        image: hakanxemik/laravel-kubernetes:latest
+        image: laravel-kubernetes:latest
         restart: always
         ports:
             - 8000:80

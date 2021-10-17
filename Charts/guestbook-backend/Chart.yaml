@@ -1,0 +1,7 @@
+## The reason for using apiVersion v1 is that I ran to many problems trying it with v2. Some devs suggested to use v1 with laravel
+apiVersion: v1
+appVersion: "1.0"
+description: An API to store your guestbook entry information.
+name: guestbook-backend
+version: 0.1.0
+
