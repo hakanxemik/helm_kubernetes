@@ -27,8 +27,8 @@ jobs:
         uses: azure/docker-login@v1
         with:
           login-server: idi2019.azurecr.io
-            username: ${{ secrets.USERNAME }}
-            password: ${{ secrets.PASSWORD }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
 
       # Kubernetes Deployment
       - name: Azure Kubernetes
