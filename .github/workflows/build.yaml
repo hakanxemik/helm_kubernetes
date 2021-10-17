@@ -30,12 +30,14 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
 
-      # Kubernetes Deployment
+      # Kubernetes Config
       - name: Azure Kubernetes
         uses: azure/k8s-set-context@master
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
           context: context-default
+
+      # Kubernetes Deployment
       - name: Azure Kubernetes Deployment Frontend
         run: helm upgrade -i guestbook-frontend ./Charts/guestbook-frontend/
       - name: Azure Kubernetes Deployment Backend
