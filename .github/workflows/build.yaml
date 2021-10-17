@@ -17,17 +17,19 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
 
-      # Kubernetes Config
+      # Kubernetes Get Config
       - name: Azure Kubernetes
         uses: azure/k8s-set-context@master
         with:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
           context: context-default
 
-      # Helm Test
+      # Helm Lint
       - name: Helm Lint
         uses: azure/setup-helm@v1
         run: helm lint ./Charts/
+
+      # Helm Debug/Test
       - name: Helm Dry Install Frontend
         run: helm install --dry-run --debug ./Charts/guestbook-frontend
       - name: Helm Dry Install Backend
@@ -42,3 +44,5 @@ jobs:
         run: helm upgrade -i guestbook-backend ./Charts/guestbook-backend/
       - name: Azure Kubernetes Deployment Database
         run: helm upgrade -i guestbook-database ./Charts/guestbook-database/
+
+## Reference https://stackoverflow.com/questions/66684294/deploy-to-kubernetes-cluster-with-github-workflow
