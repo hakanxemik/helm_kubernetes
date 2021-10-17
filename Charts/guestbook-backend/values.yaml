@@ -13,7 +13,6 @@ image:
 name: guestbook-backend
 app: guestbook-backend
 port: 8085
-tier: backend
 docker:
   registry: idi2019.azurecr.io
   name: laravel-kubernetes-backend

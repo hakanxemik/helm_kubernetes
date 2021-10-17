@@ -6,15 +6,10 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.app}}
-      tier: {{ .Values.tier}}
-      track: stable
-  replicas: 1
   template:
     metadata:
       labels:
         app: {{ .Values.app}}
-        tier: {{ .Values.tier}}
-        track: stable
     spec:
       containers:
         - name: {{ .Values.app}}
@@ -38,7 +33,6 @@ spec:
                   name: database-secrets
                   key: password
           ports:
-            - name: http
               containerPort: {{ .Values.port}}
 
 
