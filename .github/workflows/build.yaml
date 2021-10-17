@@ -33,10 +33,9 @@ jobs:
       # Kubernetes Deployment
       - name: Azure Kubernetes
         uses: azure/k8s-set-context@master
-          with:
-            method: kubeconfig
-            kubeconfig: ${{ secrets.KUBE_CONFIG }}
-            context: context-default
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
+          context: context-default
       - name: Azure Kubernetes Deployment Frontend
         run: helm upgrade -i guestbook-frontend ./Charts/guestbook-frontend/
       - name: Azure Kubernetes Deployment Backend
