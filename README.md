@@ -1,5 +1,5 @@
 # helm_kubernetes
-Team assignment Julian and Hakan
+This was a project to gain first experience in the DevOps world with helm, kubernetes and docker
 
 References:
 
